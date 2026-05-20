@@ -1,0 +1,53 @@
+{
+  "name": "mirrorai",
+  "version": "0.0.0",
+  "description": "Codebase-aware AI rules generator — produce CLAUDE.md, .cursorrules, .windsurfrules, Copilot instructions, and Cline rules from your existing code, so Claude / Cursor / Copilot follow your project's real patterns",
+  "keywords": [
+    "ai",
+    "claude",
+    "claude-code",
+    "claude-md",
+    "cursor",
+    "cursor-rules",
+    "windsurf",
+    "copilot",
+    "github-copilot",
+    "cline",
+    "ai-rules",
+    "ai-context",
+    "codebase-analysis",
+    "developer-tools",
+    "cli"
+  ],
+  "author": "joygqz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joygqz/mirrorai.git"
+  },
+  "homepage": "https://github.com/joygqz/mirrorai#readme",
+  "bugs": {
+    "url": "https://github.com/joygqz/mirrorai/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "mirrorai": "./src/cli.js"
+  },
+  "files": [
+    "src",
+    ".claude/commands/mirror-init.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "release": "bumpp --commit --tag --push && npm publish --access public"
+  },
+  "devDependencies": {
+    "bumpp": "^11.1.0"
+  },
+  "dependencies": {
+    "picocolors": "^1.1.1"
+  }
+}
