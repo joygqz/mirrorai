@@ -47,6 +47,13 @@ Also generate a plopfile and skeleton templates for zero-token local scaffolding
 
 Any file missing its marker is user-authored — annotate it `[user-authored ⚠️]` so the user sees which files mirrorai has never touched before choosing an action.
 
+**Pattern enumeration** — Before showing options, derive the list of previously matched patterns from the detected artifacts. The union of these sources is the canonical pattern list:
+
+- Every `.claude/commands/*.md` file with the mirrorai marker, excluding `mirror-init.md` — the filename stem is the pattern name (e.g. `new-resource.md` → `new-resource`)
+- Every `plop.setGenerator('<pattern>', …)` call inside `plopfile.*` — the first argument is the pattern name
+
+If neither source exists or both are empty, the pattern list is empty and option c is unavailable.
+
 List the detected files and ask:
 
 ```
@@ -58,11 +65,17 @@ The following files already exist:
   4. .claude/commands/new-job.md            [mirrorai]
   5. plopfile.js                            [mirrorai]
 
+Previously matched patterns:
+  - new-resource
+  - new-job
+
 Choose an action (default: a):
 a. Regenerate everything — re-run tool selection (same prompt as first run, allows adding new tools)
 b. Refresh existing files only — regenerate all detected files, no new tools added
-c. Select specific file(s) to regenerate  → enter numbers, e.g. "1" or "1,3,4"
+c. Select specific pattern(s) to regenerate  → enter pattern names, e.g. "new-resource" or "new-resource,new-job"
 ```
+
+If the pattern list is empty, do not display option c; only offer a and b.
 
 **For option a**: Ask the same tool-selection and plopfile opt-in questions as a first run (Step 0 "First run" branch). This allows adding new tools or removing ones no longer needed. After the user confirms their new selection, compare it against the previously detected files:
 - For any tool that was deselected: delete its mirrorai-generated rule file and its mirrorai-generated slash command files (identified by the marker). Do not delete user-authored files; prompt m/o/s for those instead.
@@ -73,19 +86,23 @@ c. Select specific file(s) to regenerate  → enter numbers, e.g. "1" or "1,3,4"
 **For option c**: After the user enters their selection, confirm back:
 
 ```
-You selected:
-  - CLAUDE.md
-  - .claude/commands/new-resource.md
-  - .claude/commands/new-job.md
+You selected patterns:
+  - new-resource
+  - new-job
 
-Regenerate only these files? (y/n)
+For each selected pattern, the following artifacts will be regenerated:
+  - .claude/commands/<pattern>.md  (if Claude Code rule files exist)
+  - plopfile generator + .mirrorai/templates/<pattern>/  (if plopfile exists)
+
+Proceed? (y/n)
 ```
 
-When only specific files are selected:
+When specific patterns are selected:
 - Re-analyze the project (Step 1) in full — the analysis is always needed to produce accurate output
-- In Step 2, only write the selected rule files; skip the rest
-- In Step 3, only write the selected slash command files; skip the rest
-- In Step 4, regenerate plopfile and ALL templates only if `plopfile.*` was among the selected files; run the full validation suite (4.4.1 through 4.4.6) against all generators in the newly written plopfile
+- In Step 1.6, restrict the high-value patterns to **only the selected pattern names**; do not introduce new patterns and do not regenerate patterns the user did not select
+- In Step 2, **skip rule file generation entirely** — general rule files (`CLAUDE.md`, `.cursorrules`, `.windsurfrules`, `.github/copilot-instructions.md`, `.clinerules`) are not touched by option c. If the user wants to refresh rule files too, direct them to option b
+- In Step 3, write only the slash command files for the selected patterns; leave all other `.claude/commands/*.md` files untouched
+- In Step 4, regenerate the plopfile and templates **only if `plopfile.*` was detected**. When regenerating: preserve all existing generator entries for patterns that were not selected, and rewrite only the selected patterns' generator entries plus their `.mirrorai/templates/<pattern>/` directories. Run the full validation suite (4.4.1 through 4.4.6) against the selected patterns' generators only
 
 **User-authored file handling** — applies only to files that *will be written* (determined by the action chosen above). For each such file that is user-authored (no mirrorai marker), prompt individually:
 
@@ -335,7 +352,7 @@ On a full run (first run or re-run option a/b), the number of slash command file
 
 ## Step 4 — Generate `plopfile` and Templates
 
-> **When to run this step**: (a) first run and the user opted in at Step 0; (b) re-run option a and the user opts in again at Step 0; (c) re-run option b and `plopfile.*` was detected; (d) re-run option c and `plopfile.*` was among the selected files. Skip entirely otherwise.
+> **When to run this step**: (a) first run and the user opted in at Step 0; (b) re-run option a and the user opts in again at Step 0; (c) re-run option b and `plopfile.*` was detected; (d) re-run option c and `plopfile.*` was detected (only the selected patterns' generators are rewritten; other generators are preserved). Skip entirely otherwise.
 
 > Note: the plopfile itself is JavaScript, but plop templates can be any language (Python, Go, Java, PHP, Ruby, etc.) — they're just text generators.
 
