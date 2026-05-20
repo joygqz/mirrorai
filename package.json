@@ -1,6 +1,6 @@
 {
   "name": "mirrorai",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Codebase-aware AI rules generator — produce CLAUDE.md, .cursorrules, .windsurfrules, Copilot instructions, and Cline rules from your existing code, so Claude / Cursor / Copilot follow your project's real patterns",
   "keywords": [
     "ai",
