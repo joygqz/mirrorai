@@ -8,8 +8,6 @@ Codebase-aware AI rules generator. Analyzes your repository and produces `CLAUDE
 
 Language- and stack-agnostic: applies equally to Vue / React frontends, Go or Node backends, Python pipelines, Rust CLIs, Flutter apps, or any codebase with discoverable patterns.
 
----
-
 ## Install
 
 ```bash
@@ -19,8 +17,6 @@ npx mirrorai install
 Copies `mirror-init.md` into `.claude/commands/` as a Claude Code slash command. The rule files, slash commands, plopfile, and templates are produced by the AI on first run.
 
 If you don't use Claude Code, paste the contents of `.claude/commands/mirror-init.md` as a prompt into Cursor, Windsurf, Copilot Chat, Cline, or any other AI tool — the workflow is identical.
-
----
 
 ## Usage
 
@@ -44,8 +40,6 @@ npx plop --help                       # list available generators
 npx mirrorai new <pattern> <name>     # scaffold the skeleton; the AI fills in business logic
 ```
 
----
-
 ## How It Works
 
 ```
@@ -64,8 +58,6 @@ Emit up to four artifact types based on your selections:
 
 Analysis runs inside your AI tool on your existing subscription. No API key is required.
 
----
-
 ## Supported AI Tools
 
 | Tool           | Generated file(s)                          |
@@ -75,8 +67,6 @@ Analysis runs inside your AI tool on your existing subscription. No API key is r
 | Windsurf       | `.windsurfrules`                           |
 | GitHub Copilot | `.github/copilot-instructions.md`          |
 | Cline          | `.clinerules`                              |
-
----
 
 ## Re-Running
 
@@ -88,15 +78,11 @@ Analysis runs inside your AI tool on your existing subscription. No API key is r
 
 Any user-authored file in the write set gets an individual merge / overwrite / skip prompt before it is modified.
 
----
-
 ## Requirements
 
 - Node.js 18+ (for the CLI and plop)
 - A subscription to at least one of: Claude Code, Cursor, Windsurf, Copilot, Cline
 - No language or framework requirements for the analyzed project
-
----
 
 ## Releasing
 
@@ -106,8 +92,6 @@ npm run release
 
 `bumpp` prompts for the next version, then commits, tags, pushes, and publishes to npm.
 
----
-
 ## License
 
-MIT
+[MIT](./LICENSE)
