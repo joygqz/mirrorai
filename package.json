@@ -1,21 +1,20 @@
 {
   "name": "mirrorai",
   "version": "0.2.1",
-  "description": "Codebase-aware AI rules generator — produce CLAUDE.md, .cursorrules, .windsurfrules, Copilot instructions, and Cline rules from your existing code, so Claude / Cursor / Copilot follow your project's real patterns",
+  "description": "Codebase-aware AI rules generator — produce AGENTS.md, CLAUDE.md, slash commands, and plop scaffolding from your existing code, so AI assistants follow your project's real patterns",
   "keywords": [
     "ai",
+    "agents-md",
     "claude",
     "claude-code",
     "claude-md",
     "cursor",
-    "cursor-rules",
-    "windsurf",
     "copilot",
     "github-copilot",
-    "cline",
     "ai-rules",
     "ai-context",
     "codebase-analysis",
+    "scaffolding",
     "developer-tools",
     "cli"
   ],
@@ -30,19 +29,19 @@
     "url": "https://github.com/joygqz/mirrorai/issues"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
+  "type": "module",
   "bin": {
     "mirrorai": "./src/cli.js"
   },
   "files": [
     "src",
-    ".claude/commands/mirror-init.md",
-    "LICENSE",
-    "README.md"
+    "templates"
   ],
   "scripts": {
-    "release": "bumpp --commit --tag --push && npm publish --access public"
+    "prepublishOnly": "node src/cli.js --help",
+    "release": "bumpp --commit --tag --push && npm publish"
   },
   "devDependencies": {
     "bumpp": "^11.1.0"
