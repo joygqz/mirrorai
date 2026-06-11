@@ -1,6 +1,6 @@
 {
   "name": "mirrorai",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Codebase-aware AI rules generator — produce AGENTS.md, CLAUDE.md, slash commands, and plop scaffolding from your existing code, so AI assistants follow your project's real patterns",
   "keywords": [
     "ai",
